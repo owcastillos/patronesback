@@ -5,6 +5,7 @@ const {
   BatchWriteCommand,
   GetCommand,
   QueryCommand,
+  ScanCommand,
   UpdateCommand,
   DeleteCommand,
 } = require("@aws-sdk/lib-dynamodb");
@@ -48,7 +49,7 @@ exports.putItem = async (TableName, Item) => {
   return await client.send(new PutCommand({ TableName, Item }));
 };
 
-exports.batchItems = async (TableName, Items) => {
+exports.batchWriteItems = async (TableName, Items) => {
   const commandInput = transformItems(TableName, Items);
   return await client.send(new BatchWriteCommand(commandInput));
 };
@@ -65,6 +66,29 @@ exports.queryItems = async (TableName, Item) => {
       ...expressions,
     })
   );
+};
+
+exports.scanItems = async (TableName, Item) => {
+  let FilterExpression, ExpressionAttributeValues;
+  if (Item.FieldsValues?.length > 0) {
+    FilterExpression = [];
+    ExpressionAttributeValues = {};
+    Item.FieldsValues.forEach((row) => {
+      const feArr = [];
+      row.Expressions.forEach((exp) => {
+        feArr.push(`${row.Field} ${exp.Condition} ${exp.Attribute}`);
+        ExpressionAttributeValues[exp.Attribute] = exp.Value;
+      });
+      FilterExpression.push(`(${feArr.join(` ${row.Condition} `)})`);
+    });
+  }
+  return await client.send(
+    new ScanCommand({ TableName, FilterExpression, ExpressionAttributeValues })
+  );
+};
+
+exports.scanItemsByExpression = async (TableName, Item) => {
+  return await client.send(new ScanCommand({ TableName, ...Item }));
 };
 
 exports.updateItem = async (TableName, Key, Item) => {
