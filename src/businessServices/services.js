@@ -13,7 +13,7 @@ let params;
 
 (async () => {
   params = await ssmService.getParameters(PATH_PARAMETERS);
-  console.log("PARAMS", params);
+  console.log("PARAMS", Object.keys(params));
 })();
 
 exports.addClient = async (body) => {
