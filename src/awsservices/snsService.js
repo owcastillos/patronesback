@@ -8,7 +8,9 @@ const {
   PublishBatchCommand,
 } = require("@aws-sdk/client-sns");
 
-const client = new SNSClient();
+const client = new SNSClient({
+  region: "us-east-2",
+});
 
 const PROTOCOLS = {
   SMS: "sms",
@@ -55,7 +57,6 @@ exports.unsubscribeEndpoint = async (SubscriptionArn) => {
 
 exports.listSubscriptionByParams = async (params) => {
   const subs = [];
-  const paramsString = params.join("||");
   let NextToken;
   let temp;
   do {
@@ -64,10 +65,15 @@ exports.listSubscriptionByParams = async (params) => {
         NextToken,
       })
     );
-    subs.push(...temp);
+    subs.push(...temp.Subscriptions);
     NextToken = temp.NextToken;
   } while (NextToken);
-  return subs.filter((sub) => paramsString.indexOf(sub.Endpoint) >= 0);
+  return subs.filter((sub) =>
+    params.reduce(
+      (acc, param) => acc || sub.Endpoint.indexOf(param) >= 0,
+      false
+    )
+  );
 };
 
 exports.publishNotification = async (PublishBatchRequestEntries, TopicArn) => {

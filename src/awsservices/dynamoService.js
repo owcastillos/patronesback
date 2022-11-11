@@ -12,7 +12,11 @@ const {
 const OPERATION = { add: "PutRequest", delete: "DeleteRequest" };
 const OPERATION_ELEMENT = { add: "Item", delete: "Key" };
 
-const client = DynamoDBDocumentClient.from(new DynamoDBClient());
+const client = DynamoDBDocumentClient.from(
+  new DynamoDBClient({
+    region: "us-east-2",
+  })
+);
 
 const transformItems = (TableName, Items) => {
   return {
@@ -83,7 +87,11 @@ exports.scanItems = async (TableName, Item) => {
     });
   }
   return await client.send(
-    new ScanCommand({ TableName, FilterExpression, ExpressionAttributeValues })
+    new ScanCommand({
+      TableName,
+      FilterExpression: FilterExpression?.join(" and "),
+      ExpressionAttributeValues,
+    })
   );
 };
 

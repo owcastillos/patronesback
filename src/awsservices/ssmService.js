@@ -3,7 +3,9 @@ const {
   GetParametersByPathCommand,
 } = require("@aws-sdk/client-ssm");
 
-const client = new SSMClient({});
+const client = new SSMClient({
+  region: "us-east-2",
+});
 
 exports.getParameters = async (Path) => {
   let NextToken;

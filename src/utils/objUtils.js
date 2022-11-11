@@ -26,4 +26,8 @@ exports.resources = Object.freeze({
   QUERY_PRODUCT_PARAMS: "/queryproductparams",
   BATCH_PROCESS: "/batch_process",
   QUERY_SUPPLIERS: "/querysuppliers",
+  ADD_FILES: "/addfiles/:filesource/:suppliername",
+  ADD_CELLPHONE: "/addcellphone",
+  VERIFY_CELLPHONE: "/verifycellphone",
+  UPDATE_PREFERENCES: "/updatepreferences",
 });

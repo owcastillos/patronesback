@@ -1,6 +1,8 @@
 const { SQSClient, SendMessageCommand } = require("@aws-sdk/client-sqs");
 
-const client = new SQSClient({});
+const client = new SQSClient({
+  region: "us-east-2",
+});
 
 exports.sendToSQS = async (topic, MessageBody, QueueUrl) => {
   return await client.send(
