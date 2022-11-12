@@ -62,16 +62,6 @@ exports.getItem = async (TableName, Key) => {
   return await client.send(new GetCommand({ TableName, Key }));
 };
 
-exports.queryItems = async (TableName, Item) => {
-  const expressions = expressionItems(Item);
-  return await client.send(
-    new QueryCommand({
-      TableName,
-      ...expressions,
-    })
-  );
-};
-
 exports.scanItems = async (TableName, Item) => {
   let FilterExpression, ExpressionAttributeValues;
   if (Item.FieldsValues?.length > 0) {

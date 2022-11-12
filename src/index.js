@@ -8,8 +8,8 @@ const fs = require("fs");
 const services = require("./businessServices/services");
 const { resources } = require("./utils/objUtils");
 const app = express();
-const PORT = 3000;
 const upload = multer({ dest: os.tmpdir() });
+const PORT = 3000;
 
 app
   .use(
