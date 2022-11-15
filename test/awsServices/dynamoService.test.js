@@ -5,20 +5,19 @@ const {
   PutCommand,
   BatchWriteCommand,
   GetCommand,
-  QueryCommand,
   ScanCommand,
   UpdateCommand,
   DeleteCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const client = mockClient(DynamoDBDocumentClient);
-const dynamoService = require("../../src/awsservices/dynamoService");
+const service = require("../../src/awsservices/dynamoService");
 describe("dynamoService test", () => {
   beforeEach(() => {
     client.reset();
   });
   it("putItem", async () => {
     client.on(PutCommand).resolves({ Attributes: {} });
-    const rs = await dynamoService.putItem("any", {});
+    const rs = await service.putItem("any", {});
     expect(rs.Attributes).not.equal(undefined);
   });
   it("batchWriteItems", async () => {
@@ -32,12 +31,12 @@ describe("dynamoService test", () => {
       operation: "delete",
     };
     const Items = [...Array(13).fill(itemAdd), ...Array(13).fill(itemDelete)];
-    const rs = await dynamoService.batchWriteItems("any", Items);
+    const rs = await service.batchWriteItems("any", Items);
     expect(rs.Attributes).not.equal(undefined);
   });
   it("getItem", async () => {
     client.on(GetCommand).resolves({ Item: { email: "any" } });
-    const rs = await dynamoService.getItem("any", {});
+    const rs = await service.getItem("any", {});
     expect(rs.Item).not.equal(undefined);
   });
   it("scanItems with FieldValues", async () => {
@@ -48,7 +47,7 @@ describe("dynamoService test", () => {
         },
       ],
     });
-    const rs = await dynamoService.scanItems("any", {
+    const rs = await service.scanItems("any", {
       FieldsValues: [
         {
           Expressions: [{ Field: "email", Condition: "=", Attribute: "any" }],
@@ -66,7 +65,7 @@ describe("dynamoService test", () => {
         },
       ],
     });
-    const rs = await dynamoService.scanItems("any", {});
+    const rs = await service.scanItems("any", {});
     expect(rs.Items.length).equal(1);
   });
   it("scanItemsByExpression", async () => {
@@ -77,12 +76,12 @@ describe("dynamoService test", () => {
         },
       ],
     });
-    const rs = await dynamoService.scanItemsByExpression("any", {});
+    const rs = await service.scanItemsByExpression("any", {});
     expect(rs.Items.length).equal(1);
   });
   it("updateItem", async () => {
     client.on(UpdateCommand).resolves({ Attributes: {} });
-    const rs = await dynamoService.updateItem(
+    const rs = await service.updateItem(
       "any",
       { email: "any" },
       { name: "any" }
@@ -91,7 +90,7 @@ describe("dynamoService test", () => {
   });
   it("deleteItem", async () => {
     client.on(DeleteCommand).resolves({ Attributes: {} });
-    const rs = await dynamoService.deleteItem("any", { email: "any" });
+    const rs = await service.deleteItem("any", { email: "any" });
     expect(rs.Attributes).not.equal(undefined);
   });
 });

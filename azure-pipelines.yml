@@ -1,0 +1,45 @@
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  displayName: 'Setting Node'
+  inputs:
+    versionSpec: '19.x'
+
+- task: DockerInstaller@0
+  displayName: 'Setting Docker'
+  inputs:
+    dockerVersion: 17.09.0-ce
+    releaseType: stable
+
+- task: Bash@3
+  displayName: 'Setting configuration'
+  inputs:
+    targetType: 'filePath'
+    filePath: sh/config.sh
+
+- script: |
+    npm install
+  displayName: 'Installing dependences'
+
+- script: |
+    npm run test
+  displayName: 'Testing'
+
+- task: Bash@3
+  displayName: 'Building'
+  inputs:
+    targetType: 'filePath'
+    filePath: sh/build.sh
+
+- task: Bash@3
+  displayName: 'Deploying'
+  inputs:
+    targetType: 'filePath'
+    filePath: sh/deploy.sh

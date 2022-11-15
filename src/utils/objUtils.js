@@ -30,4 +30,5 @@ exports.resources = Object.freeze({
   ADD_CELLPHONE: "/addcellphone",
   VERIFY_CELLPHONE: "/verifycellphone",
   UPDATE_PREFERENCES: "/updatepreferences",
+  HEALTH_CHECK: "/healthcheck",
 });
