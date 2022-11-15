@@ -19,6 +19,12 @@ steps:
     releaseType: stable
 
 - task: Bash@3
+  displayName: 'Setting Kubectl and AWS CLI'
+  inputs:
+    targetType: 'filePath'
+    filePath: sh/install.sh
+
+- task: Bash@3
   displayName: 'Setting configuration'
   inputs:
     targetType: 'filePath'
