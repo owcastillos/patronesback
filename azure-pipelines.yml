@@ -25,6 +25,12 @@ steps:
     filePath: sh/install.sh
 
 - task: Bash@3
+  displayName: 'Setting vars'
+  inputs:
+    targetType: 'filePath'
+    filePath: sh/vars.sh
+
+- task: Bash@3
   displayName: 'Setting configuration'
   inputs:
     targetType: 'filePath'
