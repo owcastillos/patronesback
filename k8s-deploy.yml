@@ -23,9 +23,9 @@ spec:
           image: "596779343245.dkr.ecr.us-east-2.amazonaws.com/simcf-backend:latest"
           env: 
           - name: AWS_ACCESS_KEY_ID
-            value: "|AWS_ACCESS_KEY_ID|"
+            value: "$(AWS_ACCESS_KEY_ID)"
           - name: AWS_SECRET_ACCESS_KEY
-            value: "|AWS_SECRET_ACCESS_KEY|"
+            value: "$(AWS_SECRET_ACCESS_KEY)"
           - name: AWS_DEFAULT_REGION
             value: "us-east-2"
 ---
