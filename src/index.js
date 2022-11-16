@@ -86,7 +86,7 @@ app.post(resources.UPDATE_PREFERENCES, (req, res) => {
   });
 });
 app.get(resources.HEALTH_CHECK, (req, res) => {
-  res.send({ status: "Funciona!" });
+  res.send({ status: "OK" });
 });
 
 const server = http.createServer(app);
