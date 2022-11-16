@@ -1,5 +1,5 @@
-aws --profile default configure set aws_access_key_id $(AWS_ACCESS_KEY_ID)
-aws --profile default configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY)
+aws --profile default configure set aws_access_key_id |AWS_ACCESS_KEY_ID|
+aws --profile default configure set aws_secret_access_key |AWS_SECRET_ACCESS_KEY|
 aws --profile default configure set region us-east-2
 
 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 596779343245.dkr.ecr.us-east-2.amazonaws.com/simcf-backend
