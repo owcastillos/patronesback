@@ -6,7 +6,7 @@ metadata:
     name: simcf-backend-deploy
     app: simcf-backend-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: simcf-backend-pod
@@ -21,6 +21,13 @@ spec:
       containers:
         - name: simcf-backend-container
           image: "596779343245.dkr.ecr.us-east-2.amazonaws.com/simcf-backend:latest"
+          resources: 
+            limits:
+              cpu: 800m
+              memory: 256Mi
+            requests:
+              cpu: 500m
+              memory: 128Mi
           env: 
           - name: AWS_ACCESS_KEY_ID
             value: "|AWS_ACCESS_KEY_ID|"
