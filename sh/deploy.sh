@@ -1,3 +1,4 @@
+kubectl delete deployment.apps/simcf-backend-deploy
 kubectl apply -f k8s-deploy.yml
 sleep 10
 kubectl get service simcf-backend-service
