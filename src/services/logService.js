@@ -1,5 +1,5 @@
 const http = require("follow-redirects").http;
-const child_process = require("child_process");
+const childProcess = require("child_process");
 const host = require("os").hostname;
 let hostname;
 
@@ -10,10 +10,10 @@ exports.sendLog = (message) => {
   ]
     .join("\n")
     .concat("\n");
-  const child = child_process.fork("./src/services/logProcess.js");
+  const child = childProcess.fork("./src/services/logProcess.js");
   child.on("message", (msg) => {
     const { data, content } = msg;
-    let req = http.request(
+    const req = http.request(
       {
         method: "POST",
         hostname,
@@ -24,7 +24,7 @@ exports.sendLog = (message) => {
         },
       },
       (res) => {
-        let chunks = [];
+        const chunks = [];
         res.on("data", (chunk) => chunks.push(chunk));
         res.on("end", () =>
           console.log(
@@ -45,7 +45,7 @@ exports.sendLog = (message) => {
   });
   child.send({
     data,
-    content:message
+    content: message,
   });
 };
 
