@@ -13,13 +13,19 @@ const upload = multer({ dest: os.tmpdir() });
 const PORT = 3000;
 
 app
-  .use(
-    cors([
-      {
-        origin: "*",
-      },
-    ])
-  )
+  .use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, content-type"
+    );
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, PUT, DELETE"
+    );
+    res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+    next();
+  })
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .post(resources.ADD_CLIENT, (req, res) => {
