@@ -4,7 +4,6 @@ const {
   PutCommand,
   BatchWriteCommand,
   GetCommand,
-  QueryCommand,
   ScanCommand,
   UpdateCommand,
   DeleteCommand,
@@ -63,7 +62,8 @@ exports.getItem = async (TableName, Key) => {
 };
 
 exports.scanItems = async (TableName, Item) => {
-  let FilterExpression, ExpressionAttributeValues;
+  let FilterExpression;
+  let ExpressionAttributeValues;
   if (Item.FieldsValues?.length > 0) {
     FilterExpression = [];
     ExpressionAttributeValues = {};

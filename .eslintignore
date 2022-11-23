@@ -3,3 +3,4 @@ test
 coverage/**
 .scannerwork/*
 .nyc_output/*
+*slides.js

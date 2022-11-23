@@ -44,6 +44,14 @@ steps:
     npm run test
   displayName: 'Testing'
 
+- script: |
+    npm run prettier
+  displayName: 'Prettier'
+
+- script: |
+    npm run lint
+  displayName: 'Lint'
+
 - task: Bash@3
   displayName: 'Building'
   inputs:

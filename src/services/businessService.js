@@ -4,6 +4,7 @@ const locationService = require("../awsservices/locationService");
 const ssmService = require("../awsservices/ssmService");
 const snsService = require("../awsservices/snsService");
 const { calculateDistance } = require("../utils/objUtils");
+const { sendLog, setURL } = require("./logService");
 const PATH_PARAMETERS = "/simcf";
 const BATCH_SIZE = 25;
 const ADD_OPER = "add";
@@ -13,10 +14,12 @@ let params;
 
 (async () => {
   params = await ssmService.getParameters(PATH_PARAMETERS);
-  console.log("PARAMS", Object.keys(params));
+  setURL(params.url_elk);
+  sendLog("Parameters loaded successfully");
 })();
 
 exports.addClient = async (body) => {
+  sendLog("Adding new client");
   const location = await locationService.findLocation(
     params.location_index,
     body.address
@@ -28,6 +31,7 @@ exports.addClient = async (body) => {
 };
 
 exports.updateClient = async (body) => {
+  sendLog("Updating client");
   const { email, ...client } = body;
   return await dynamoService.updateItem(
     params.table_clients,
@@ -37,14 +41,17 @@ exports.updateClient = async (body) => {
 };
 
 exports.getClient = async (body) => {
+  sendLog("Getting client");
   return await dynamoService.getItem(params.table_clients, body);
 };
 
 exports.getProducts = async (body) => {
+  sendLog("Getting products");
   return await dynamoService.scanItems(params.table_products, body);
 };
 
 exports.getSuppliers = async (body) => {
+  sendLog("Getting suppliers");
   const suppliers = await dynamoService.scanItemsByExpression(
     params.table_clients,
     {
@@ -59,6 +66,7 @@ exports.getSuppliers = async (body) => {
 };
 
 exports.processContent = async (supplierId, supplierName, body) => {
+  sendLog("Processing file content");
   const content = body.split("\n");
   let batch = [];
   const dynamoPromises = [];
@@ -114,14 +122,17 @@ exports.processContent = async (supplierId, supplierName, body) => {
 };
 
 exports.addPhoneNumber = async (cellphone) => {
+  sendLog("Adding phone number to sandbox");
   return await snsService.addPhoneNumber(cellphone);
 };
 
 exports.verifyPhoneNumber = async (cellphone, otp) => {
+  sendLog("Verifying sandbox number");
   return await snsService.verifyPhoneNumber(cellphone, otp);
 };
 
 exports.updateSNSPreferences = async (client) => {
+  sendLog("Updating SNS preferences");
   const subs = await snsService.listSubscriptionByParams([
     client.email,
     client.cellphone,
