@@ -1,7 +1,6 @@
 const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const os = require("os");
 const multer = require("multer");
 const fs = require("fs");
