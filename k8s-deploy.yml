@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: simcf-backend-deploy
+  labels: 
+    name: simcf-backend-deploy
+    app: simcf-backend-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: simcf-backend-pod
+      app: simcf-backend-app
+  template:
+    metadata:
+      name: simcf-backend-pod
+      labels:
+        name: simcf-backend-pod
+        app: simcf-backend-app
+    spec:
+      containers:
+        - name: simcf-backend-container
+          image: "596779343245.dkr.ecr.us-east-2.amazonaws.com/simcf-backend:latest"
+          resources: 
+            limits:
+              cpu: 800m
+              memory: 256Mi
+            requests:
+              cpu: 500m
+              memory: 128Mi
+          env: 
+          - name: AWS_ACCESS_KEY_ID
+            value: "|AWS_ACCESS_KEY_ID|"
+          - name: AWS_SECRET_ACCESS_KEY
+            value: "|AWS_SECRET_ACCESS_KEY|"
+          - name: AWS_DEFAULT_REGION
+            value: "us-east-2"
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: simcf-backend-service
+  labels: 
+    name: simcf-backend-deploy
+    app: simcf-backend-app
+spec:
+  type: LoadBalancer
+  selector: 
+    app: simcf-backend-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
